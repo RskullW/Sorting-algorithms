@@ -117,6 +117,26 @@ void UserSorting::QuickSort() {
     Log("Test Quick-3 \"Reverse ordered array\", time(second) = " + std::to_string((clock() - start_time) / 1000.0));
 }
 
+void UserSorting::MergeSort() {
+    if (m_size == 0) {
+        throw std::string("Array is empty");
+    }
+
+    start_time = clock();
+    QuickSortLocal(m_array, m_size);
+    Log("Test Merge-1 \"Unordered array\", time(second) = " + std::to_string((clock() - start_time) / 1000.0));
+
+    start_time = clock();
+    QuickSortLocal(m_array, m_size);
+    Log("Test Merge-2 \"Ordered array\", time(second) = " + std::to_string((clock() - start_time) / 1000.0));
+
+    ReverseArray();
+
+    start_time = clock();
+    QuickSortLocal(m_array, m_size);
+    Log("Test Merge-3 \"Reverse ordered array\", time(second) = " + std::to_string((clock() - start_time) / 1000.0));
+}
+
 void UserSorting::BubbleSortLocal() {
     for (int i = 0; i < m_size-1; ++i) {
         for (int j = i+1; j < m_size; ++j) {
@@ -187,5 +207,77 @@ void UserSorting::QuickSortLocal(int* array, int size) {
 
     if (i<size-1) {
         QuickSortLocal(array + i, size - i);
+    }
+}
+
+void UserSorting::MergeSortLocal() {
+    char flag = 0, sorted = 0;
+
+    int split;
+    int last, end, i, *p=m_array, *tmp, pos1, pos2, pos3;
+
+    tmp = (int*) malloc (m_size*sizeof(int));
+    do {
+        end = m_size; pos2 = pos3 = 0;
+
+        do {
+            p += pos2; end = m_size - pos3;
+
+            for (split=1; split < end && p[split-1] <= p[split]; split++);
+
+            if (split == m_size) {
+                sorted = 1 ; break;
+            }
+
+            pos1 = 0;
+            pos2 = split;
+
+            while ( pos1 < split && pos2 < end ) {
+
+                if (p[pos1] < p[pos2]) {
+                    tmp[pos3++] = p[pos1++];
+                }
+
+                else {
+                    tmp[pos3++] = p[pos2++];
+                    if (p[pos2] < p[pos2-1]) break;
+                }
+
+            }
+
+            while ( pos2 < end && tmp[pos3-1]<=p[pos2] ) {
+                tmp[pos3++] = p[pos2++];
+            }
+
+            while ( pos1 < split ) {
+                tmp[pos3++] = p[pos1++];
+            }
+        }
+
+        while (pos3 < m_size );
+
+        if (sorted) {
+            break;
+        }
+
+        p = tmp;
+        tmp = m_array;
+        m_array = p;
+        flag = !flag;
+    }
+
+    while (split<m_size);
+
+    if (flag) {
+
+        for (pos1 = 0; pos1 < m_size; pos1++) {
+            tmp[pos1] = m_array[pos1];
+        }
+
+        free (m_array);
+    }
+
+    else {
+        free(tmp);
     }
 }

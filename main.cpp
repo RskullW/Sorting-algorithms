@@ -48,6 +48,10 @@ void AlgorithmSorted(int size) {
         main_algorithm.QuickSort();
         main_algorithm.ClearArray();
 
+        std::cout << "\nMERGE SORT\n_____\n";
+        main_algorithm.FillArray(std::string(PATH), size);
+        main_algorithm.MergeSort();
+        main_algorithm.ClearArray();
 
         std::cout << "\nTest completed. Enter any character to continue..\n";
         getchar();

@@ -14,6 +14,7 @@ public:
     void BubbleSort();
     void ShakerSort();
     void QuickSort();
+    void MergeSort();
 
     template<class T> void Log(T user_message) const {
         std::cout << "LOG: " << user_message << '\n';
@@ -25,6 +26,7 @@ private:
     void BubbleSortLocal();
     void ShakerSortLocal();
     void QuickSortLocal(int* array, int size);
+    void MergeSortLocal();
 
 private:
 
